@@ -1069,7 +1069,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (mRibbonView == null) {
             ViewStub ribbon_stub = (ViewStub) mStatusBarWindow.findViewById(R.id.ribbon_settings_stub);
             if (ribbon_stub != null) {
-                mRibbonView = (QuickSettingsHorizontalScrollView) ribbon_stub.inflate();
+                mRibbonView = (QuickSettingsHorizontalScrollView) ((ViewStub)ribbon_stub).inflate();
                 mRibbonView.setVisibility(View.VISIBLE);
             }
         }
@@ -1159,7 +1159,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (mNavigationBarView == null) {
                 mNavigationBarView =
                     (NavigationBarView) View.inflate(context, R.layout.navigation_bar, null);
-            }
+        }
 
             mNavigationBarView.setDisabledFlags(mDisabled);
             mNavigationBarView.setBar(this);
@@ -2697,12 +2697,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     )));
         if (mRibbonView != null && mHasQuickAccessSettings) {
             mRibbonViewAnim = start(
-                    startDelay(FLIP_DURATION_OUT * zeroOutDelays,
-                            setVisibilityOnStart(
-                                    interpolator(mDecelerateInterpolator,
-                                            ObjectAnimator.ofFloat(mRibbonView, View.SCALE_X, 1f)
-                                                    .setDuration(FLIP_DURATION_IN)),
-                                    mRibbonView, View.VISIBLE)));
+                startDelay(FLIP_DURATION_OUT * zeroOutDelays,
+                    setVisibilityOnStart(
+                        interpolator(mDecelerateInterpolator,
+                            ObjectAnimator.ofFloat(mRibbonView, View.SCALE_X, 1f)
+                                .setDuration(FLIP_DURATION_IN)),
+                        mRibbonView, View.VISIBLE)));
         }
         mFlipSettingsViewAnim = start(
             setVisibilityWhenDone(
@@ -2886,12 +2886,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 mScrollView, View.INVISIBLE));
         if (mRibbonView != null) {
             mRibbonViewAnim = start(
-                    setVisibilityWhenDone(
-                            interpolator(mAccelerateInterpolator,
-                                    ObjectAnimator.ofFloat(mRibbonView, View.SCALE_X, 0f)
+                setVisibilityWhenDone(
+                    interpolator(mAccelerateInterpolator,
+                            ObjectAnimator.ofFloat(mRibbonView, View.SCALE_X, 0f)
                             )
-                                    .setDuration(FLIP_DURATION_OUT),
-                            mRibbonView, View.GONE));
+                        .setDuration(FLIP_DURATION_OUT),
+                    mRibbonView, View.GONE));
         }
         mSettingsButtonAnim = start(
             setVisibilityWhenDone(
@@ -4252,6 +4252,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         if (uiThemeMode != mCurrUiThemeMode) {
             mCurrUiThemeMode = uiThemeMode;
             recreateStatusBar(false);
+            return;
         }
 
         // detect density change
